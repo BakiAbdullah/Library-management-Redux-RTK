@@ -34,51 +34,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { IBook } from "@/types";
-
-
-const data: IBook[] = [
-  {
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    genre: "FICTION",
-    isbn: "978074327",
-    description: "A novel set in the 1920s about the American dream.",
-    copies: 5,
-    available: true,
-  },
-  {
-    title: "Sapiens: A Brief History of Humankind",
-    author: "Yuval Noah Harari",
-    genre: "NON_FICTION",
-    isbn: "978006231",
-    description: "An exploration of the history and impact of Homo sapiens.",
-    copies: 3,
-    available: true,
-  },
-  {
-    title: "The Selfish Gene",
-    author: "Richard Dawkins",
-    genre: "SCIENCE",
-    isbn: "978019929",
-    description: "A book on evolution and the gene-centered view of natural selection.",
-    copies: 0,
-    available: false,
-  },
-  {
-    title: "The Diary of a Young Girl",
-    author: "Anne Frank",
-    genre: "HISTORY",
-    isbn: "978055329",
-    description: "The diary of a Jewish girl hiding from the Nazis during World War II.",
-    copies: 4,
-    available: true,
-  },
-];
-
-
+import { useGetBooksQuery } from "@/redux/api/bookApi";
 
 export const columns: ColumnDef<IBook>[] = [
-
   {
     accessorKey: "title",
     header: "Title",
@@ -124,31 +82,13 @@ export const columns: ColumnDef<IBook>[] = [
   {
     // accessorKey: "delete",
     header: "Delete",
-    cell: ({ row }) => (
+    cell: () => (
       <div className="capitalize">
-        <Trash
-          onClick={() => handleDelete(row.original.isbn)}
-          className="h-4 w-4 text-red-600"
-        />
+        <Trash className="h-4 w-4 text-red-600" />
       </div>
     ),
   },
 
-  // {
-  //   accessorKey: "amount",
-  //   header: () => <div className="text-right">Amount</div>,
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("amount"));
-
-  //     // Format the amount as a dollar amount
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(amount);
-
-  //     return <div className="text-right font-medium">{formatted}</div>;
-  //   },
-  // },
   {
     accessorKey: "sdf",
     header: () => <div className="text-right">Actions</div>,
@@ -182,6 +122,11 @@ export const columns: ColumnDef<IBook>[] = [
 ];
 
 export function AllBooks() {
+  // Consuming the API to get books data from Rtk Query
+  const { data: booksResponse } = useGetBooksQuery();
+  const booksData = booksResponse?.data || [];
+
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -191,7 +136,7 @@ export function AllBooks() {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: booksData as IBook[],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -208,11 +153,6 @@ export function AllBooks() {
       rowSelection,
     },
   });
-
-  const handleDelete = (id: string) => {
-    console.log(handleDelete)
-    console.log("Deleting book with id:", id);
-  };
 
   return (
     <div className="w-full mx-auto">
@@ -366,6 +306,3 @@ export function AllBooks() {
     </div>
   );
 }
-
-
-

@@ -1,10 +1,4 @@
-export interface IUser {
-  id: string;
-  name: string;
-}
-
 export interface IBook {
- 
   title: string;
   author: string;
   genre:
@@ -15,8 +9,8 @@ export interface IBook {
     | "BIOGRAPHY"
     | "FANTASY";
   isbn: string;
-  description: string;
+  description?: string;
   copies: number;
   available?: boolean;
 }
-
+[];
