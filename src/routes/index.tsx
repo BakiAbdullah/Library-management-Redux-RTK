@@ -1,9 +1,9 @@
 import App from "@/App";
 import Banner from "@/components/layout/Banner";
-import { Books } from "@/pages/Books";
-
+import AddBook from "@/pages/AddBook";
+import { AllBooks } from "@/pages/Books";
 import Borrow from "@/pages/Borrow";
-
+import { Footer } from "@/components/layout/Footer";
 
 import { createBrowserRouter } from "react-router";
 
@@ -15,15 +15,23 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Banner/>
+        element: <Banner />,
       },
       {
-        path: "books",
-        Component: Books,
+        index: true,
+        element: <Footer />,
       },
       {
-        path: "borrow",
-        Component: Borrow
+        path: "all-books",
+        Component: AllBooks,
+      },
+      {
+        path: "borrow-summary",
+        Component: Borrow,
+      },
+      {
+        path: "add-book",
+        Component: AddBook,
       },
     ],
   },

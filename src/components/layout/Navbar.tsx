@@ -10,9 +10,9 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Home", path: "/" },
-    { label: "Books", path: "/books" },
-    { label: "Borrow", path: "/borrow" },
-    {label: "About", path: "/about" },
+    { label: "All Books", path: "/all-books" },
+    { label: "Borrow Summary", path: "/borrow-summary" },
+    { label: "Add Book", path: "/add-book" },
   ];
 
   const handleSearch = (query: string) => {

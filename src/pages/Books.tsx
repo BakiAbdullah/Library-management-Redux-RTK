@@ -13,13 +13,11 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 import type { SortingState } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ChevronDown, MoreHorizontal, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -35,112 +33,128 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { IBook } from "@/types";
 
-const data: Payment[] = [
+
+const data: IBook[] = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    genre: "FICTION",
+    isbn: "978074327",
+    description: "A novel set in the 1920s about the American dream.",
+    copies: 5,
+    available: true,
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
+    title: "Sapiens: A Brief History of Humankind",
+    author: "Yuval Noah Harari",
+    genre: "NON_FICTION",
+    isbn: "978006231",
+    description: "An exploration of the history and impact of Homo sapiens.",
+    copies: 3,
+    available: true,
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
+    title: "The Selfish Gene",
+    author: "Richard Dawkins",
+    genre: "SCIENCE",
+    isbn: "978019929",
+    description: "A book on evolution and the gene-centered view of natural selection.",
+    copies: 0,
+    available: false,
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
+    title: "The Diary of a Young Girl",
+    author: "Anne Frank",
+    genre: "HISTORY",
+    isbn: "978055329",
+    description: "The diary of a Jewish girl hiding from the Nazis during World War II.",
+    copies: 4,
+    available: true,
   },
 ];
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
 
-export const columns: ColumnDef<Payment>[] = [
+
+export const columns: ColumnDef<IBook>[] = [
+
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    accessorKey: "title",
+    header: "Title",
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="capitalize">{row.getValue("title")}</div>
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "author",
+    header: "Author",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("author")}</div>
     ),
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    accessorKey: "genre",
+    header: "Genre",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("genre")}</div>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
+    accessorKey: "isbn",
+    header: "ISBN",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("isbn")}</div>,
   },
   {
-    id: "actions",
+    accessorKey: "copies",
+    header: "Copies",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("copies")}</div>
+    ),
+  },
+  {
+    accessorKey: "available",
+    header: "Available",
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {row.getValue("available") ? "Yes" : "No"}
+      </div>
+    ),
+  },
+  {
+    // accessorKey: "delete",
+    header: "Delete",
+    cell: ({ row }) => (
+      <div className="capitalize">
+        <Trash
+          onClick={() => handleDelete(row.original.isbn)}
+          className="h-4 w-4 text-red-600"
+        />
+      </div>
+    ),
+  },
+
+  // {
+  //   accessorKey: "amount",
+  //   header: () => <div className="text-right">Amount</div>,
+  //   cell: ({ row }) => {
+  //     const amount = parseFloat(row.getValue("amount"));
+
+  //     // Format the amount as a dollar amount
+  //     const formatted = new Intl.NumberFormat("en-US", {
+  //       style: "currency",
+  //       currency: "USD",
+  //     }).format(amount);
+
+  //     return <div className="text-right font-medium">{formatted}</div>;
+  //   },
+  // },
+  {
+    accessorKey: "sdf",
+    header: () => <div className="text-right">Actions</div>,
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const book = row.original;
 
       return (
         <DropdownMenu>
@@ -153,9 +167,9 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(book.isbn)}
             >
-              Copy payment ID
+              Copy book ISBN
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
@@ -167,7 +181,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function Books() {
+export function AllBooks() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -195,6 +209,11 @@ export function Books() {
     },
   });
 
+  const handleDelete = (id: string) => {
+    console.log(handleDelete)
+    console.log("Deleting book with id:", id);
+  };
+
   return (
     <div className="w-full mx-auto">
       {/* Banner Section */}
@@ -219,24 +238,30 @@ export function Books() {
         {/* Table Filters */}
         <div className="flex flex-wrap items-center gap-4 pb-6 border-b border-gray-200 mb-4">
           <Input
-            placeholder="Search by email..."
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+            placeholder="Search by Genre..."
+            value={(table.getColumn("genre")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
+              table.getColumn("genre")?.setFilterValue(event.target.value)
             }
             className="max-w-sm shadow-sm focus:ring-2 focus:ring-blue-500"
           />
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
+            >
+              Add New Book <ChevronDown className="h-4 w-4 font" />
+            </Button>
+            {/* <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 className="ml-auto flex items-center gap-2"
               >
                 Columns <ChevronDown className="h-4 w-4" />
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            </DropdownMenuTrigger> */}
+            {/* <DropdownMenuContent align="end" className="w-48">
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
@@ -252,12 +277,12 @@ export function Books() {
                     {column.id}
                   </DropdownMenuCheckboxItem>
                 ))}
-            </DropdownMenuContent>
+            </DropdownMenuContent> */}
           </DropdownMenu>
         </div>
 
         {/* Table Display */}
-        <div className="rounded-xl border shadow-md overflow-x-auto">
+        <div className="rounded-xl border shadow-md overflow-x-auto ">
           <Table>
             <TableHeader className="bg-gray-100">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -341,3 +366,6 @@ export function Books() {
     </div>
   );
 }
+
+
+
