@@ -1,35 +1,51 @@
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { useCreateBookMutation } from "@/redux/api/bookApi";
+import type { IBookData } from "@/types";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
-type ContactFormData = {
-  title: string;
-  author: string;
-  genre: string;
-  isbn: string;
-  description: string;
-  copies: number;
-};
+
 
 export default function AddBook() {
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ContactFormData>();
+  } = useForm<IBookData>();
+  
+  const [createBook, { data, isLoading }] = useCreateBookMutation();
+  console.log({data})
 
-  const onSubmit = (data: ContactFormData) => {
-    console.log("Submitted:", data);
-    // TODO: send data to API
+  const onSubmit: SubmitHandler<IBookData> = async (data) => {
 
-    toast("Book added successfully!");
+    const bookData: IBookData = {
+      ...data,
+      available: true,
+    };
 
-    setTimeout(() => {
-      navigate("/all-books");
-    }, 500);
+     await createBook(bookData)
+      .unwrap()
+      .then(() => {
+        toast("Book added successfully!");
+        navigate("/all-books");
+        reset();
+      })
+      .catch((error) => {
+        console.error("Error creating book:", error);
+        toast.error("Failed to add book!");
+      });
+
+
+    console.log({bookData})
+
+
+    // setTimeout(() => {
+    //   navigate("/all-books");
+    // }, 500);
     reset(); // Reset form after submit
   };
   return (
@@ -173,8 +189,8 @@ export default function AddBook() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                    
+                      clipRule="evenodd"
                       d="M0 100C0 44.7715 0 0 0 0C55.2285 0 100 44.7715 100 100C100 100 100 100 0 100Z"
                       fill="#3056D3"
                     />

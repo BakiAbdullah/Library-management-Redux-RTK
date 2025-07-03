@@ -22,3 +22,13 @@ export interface IBorrowBook {
   };
   totalQuantity: number;
 }[]
+
+export interface IBookData {
+  title: string;
+  author: string;
+  genre: string;
+  isbn: string;
+  description: string;
+  copies: number;
+  available?: boolean
+};
