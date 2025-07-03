@@ -13,7 +13,7 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 import type { SortingState } from "@tanstack/react-table";
-import { ChevronDown, MoreHorizontal, Trash } from "lucide-react";
+import {  MoreHorizontal, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/table";
 import type { IBook } from "@/types";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
+import Loader from "@/components/layout/Loader";
 
 export const columns: ColumnDef<IBook>[] = [
   {
@@ -123,10 +124,13 @@ export const columns: ColumnDef<IBook>[] = [
 
 export function AllBooks() {
   // Consuming the API to get books data from Rtk Query
-  const { data: booksResponse } = useGetBooksQuery();
-  const booksData = booksResponse?.data || [];
+  const { data: booksResponse, isLoading } = useGetBooksQuery({
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
-
+  // Hooks
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -135,8 +139,13 @@ export function AllBooks() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  // ensuring booksResponse is an array
+  const booksData: IBook[] = Array.isArray(booksResponse?.data)
+    ? booksResponse.data
+    : [];
+
   const table = useReactTable({
-    data: booksData as IBook[],
+    data: booksData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -153,6 +162,10 @@ export function AllBooks() {
       rowSelection,
     },
   });
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full mx-auto">
@@ -176,7 +189,7 @@ export function AllBooks() {
 
       <div className="max-w-7xl mx-auto px-4">
         {/* Table Filters */}
-        <div className="flex flex-wrap items-center gap-4 pb-6 border-b border-gray-200 mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-200 mb-4">
           <Input
             placeholder="Search by Genre..."
             value={(table.getColumn("genre")?.getFilterValue() as string) ?? ""}
@@ -187,37 +200,20 @@ export function AllBooks() {
           />
 
           <DropdownMenu>
-            <Button
-              variant="outline"
-              className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
-            >
-              Add New Book <ChevronDown className="h-4 w-4 font" />
-            </Button>
-            {/* <DropdownMenuTrigger asChild>
+            <div className="flex space-x-4">
               <Button
                 variant="outline"
-                className="ml-auto flex items-center gap-2"
+                className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
               >
-                Columns <ChevronDown className="h-4 w-4" />
+                Borrow Books
               </Button>
-            </DropdownMenuTrigger> */}
-            {/* <DropdownMenuContent align="end" className="w-48">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </DropdownMenuContent> */}
+              <Button
+                variant="outline"
+                className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
+              >
+                Add New Book 
+              </Button>
+            </div>
           </DropdownMenu>
         </div>
 

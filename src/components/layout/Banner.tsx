@@ -7,7 +7,8 @@ export default function Banner() {
     <section className="relative w-full h-screen overflow-hidden">
       {/* Background Image */}
       <img
-        src="https://cdn.pixabay.com/photo/2014/10/14/20/14/library-488690_1280.jpg " alt="Library Banner"
+        src="https://cdn.pixabay.com/photo/2014/10/14/20/14/library-488690_1280.jpg "
+        alt="Library Banner"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
@@ -23,12 +24,12 @@ export default function Banner() {
           Explore thousands of books. Borrow, read, and grow your knowledge.
         </p>
         <div className="flex gap-4 flex-wrap justify-center">
-          <Link to="/books">
+          <Link to="/all-books">
             <Button className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-md text-lg">
               Browse Books
             </Button>
           </Link>
-          <Link to="/borrow">
+          <Link to="/borrow-summary">
             <Button
               variant="outline"
               className="border-white text-amber-500 hover:bg-white/10 px-6 py-3 text-lg"

@@ -14,3 +14,11 @@ export interface IBook {
   available?: boolean;
 }
 [];
+
+export interface IBorrowBook {
+  book: {
+    title: string;
+    isbn: string;
+  };
+  totalQuantity: number;
+}[]

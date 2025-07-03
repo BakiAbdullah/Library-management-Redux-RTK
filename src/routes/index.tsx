@@ -6,12 +6,14 @@ import Borrow from "@/pages/Borrow";
 import { Footer } from "@/components/layout/Footer";
 
 import { createBrowserRouter } from "react-router";
+import { ErrorPage } from "@/pages/ErrorPage";
+
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <div>Not Found</div>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
