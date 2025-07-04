@@ -4,21 +4,21 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const bookApi = createApi({
   reducerPath: "bookApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://assignment-3-xi-kohl.vercel.app",
+    baseUrl: "https://assignment-4-backend-ten.vercel.app",
   }),
   tagTypes: ["books", "borrow"],
   endpoints: (builder) => ({
+    // GET Books Api
     getBooks: builder.query<{ data: IBook[] }, any>({
       query: () => "/api/books",
       providesTags: ["books"],
     }),
+
+    // GET Single Book Api
     getSingleBook: builder.query<IBook, string>({
       query: (id) => `/api/books/${id}`,
     }),
-    getBorrowBookSummary: builder.query<{ data: IBorrowBook[] }, any>({
-      query: () => "/api/borrow",
-      providesTags: ["borrow"],
-    }),
+
     // CREATE Book Api
     createBook: builder.mutation({
       query: (booksData: IBookData) => ({
@@ -26,8 +26,52 @@ export const bookApi = createApi({
         method: "POST",
         body: booksData,
       }),
+      invalidatesTags: ["books"],
+    }),
+
+    // DELETE Book Api
+    deleteBook: builder.mutation({
+      query: ({ _id }) => ({
+        url: `/api/books/${_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["books"],
+    }),
+
+    // Edit (UPDATE) Book Api
+    updateBook: builder.mutation({
+      query: ({ _id, booksData }) => ({
+        url: `/api/books/${_id}`,
+        method: "PUT",
+        body: booksData,
+      }),
+      invalidatesTags: ["books"],
+    }),
+
+    // GET Borrow Book Summary Api
+    getBorrowBookSummary: builder.query<{ data: IBorrowBook[] }, any>({
+      query: () => "/api/borrow",
+      providesTags: ["borrow"],
+    }),
+
+    // Borrow Api
+    borrowBook: builder.mutation({
+      query: (borrowData) => ({
+        url: "/api/borrow",
+        method: "POST",
+        body: borrowData,
+      }),
+      invalidatesTags: ["borrow", "books"],
     }),
   }),
 });
 
-export const { useGetBooksQuery, useGetSingleBookQuery, useGetBorrowBookSummaryQuery, useCreateBookMutation } = bookApi;
+export const {
+  useGetBooksQuery,
+  useGetSingleBookQuery,
+  useGetBorrowBookSummaryQuery,
+  useCreateBookMutation,
+  useBorrowBookMutation,
+  useDeleteBookMutation,
+  useUpdateBookMutation
+} = bookApi;

@@ -1,6 +1,6 @@
 import Loader from "@/components/layout/Loader";
 import { useGetBorrowBookSummaryQuery } from "@/redux/api/bookApi";
-import type { IBorrowBook } from "@/types";
+
 
 export default function Borrow() {
   const { data: borrowData, isLoading } = useGetBorrowBookSummaryQuery({
@@ -11,11 +11,10 @@ export default function Borrow() {
 
   if (isLoading) return <Loader />;
   // ensuring booksResponse is an array
-  const borrowBooksData: IBorrowBook[] = Array.isArray(borrowData?.data)
+  const borrowBooksData: any = Array.isArray(borrowData?.data)
     ? borrowData?.data
     : [];
 
-  console.log(borrowBooksData);
 
   return (
     <div className="w-full mx-auto">
@@ -73,8 +72,8 @@ export default function Borrow() {
               </thead>
 
               <tbody>
-                {borrowBooksData?.map((item, idx) => {
-                  console.log({ item });
+                {borrowBooksData?.map((item:any, idx:number) => {
+                
                   return (
                     <tr key={idx}>
                       <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">

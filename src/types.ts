@@ -1,4 +1,5 @@
 export interface IBook {
+  _id: string,
   title: string;
   author: string;
   genre:
@@ -16,19 +17,32 @@ export interface IBook {
 [];
 
 export interface IBorrowBook {
-  book: {
-    title: string;
-    isbn: string;
-  };
-  totalQuantity: number;
-}[]
+  book: string,
+  quantity: number;
+  dueDate: Date,
+}
 
 export interface IBookData {
   title: string;
   author: string;
-  genre: string;
+  genre:
+  | "FICTION"
+  | "NON_FICTION"
+  | "SCIENCE"
+  | "HISTORY"
+  | "BIOGRAPHY"
+  | "FANTASY";
   isbn: string;
   description: string;
   copies: number;
   available?: boolean
 };
+
+export interface BooksCardProps {
+  booksData: IBook[];
+}
+
+export interface IBorrowBooksModalProps {
+  bookId: string;
+  availableCopies: number;
+}

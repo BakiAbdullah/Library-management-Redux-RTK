@@ -1,37 +1,44 @@
+import Loader from "@/components/layout/Loader";
 import { Button } from "@/components/ui/button";
 import { useCreateBookMutation } from "@/redux/api/bookApi";
 import type { IBookData } from "@/types";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function AddBook() {
   const navigate = useNavigate();
 
   const {
+    control,
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<IBookData>();
-  
+
   const [createBook, { data, isLoading }] = useCreateBookMutation();
-  console.log({data})
+  console.log({ data });
 
   const onSubmit: SubmitHandler<IBookData> = async (data) => {
-
     const bookData: IBookData = {
       ...data,
       available: true,
     };
 
-     await createBook(bookData)
+    await createBook(bookData)
       .unwrap()
       .then(() => {
         toast("Book added successfully!");
-        navigate("/all-books");
         reset();
       })
       .catch((error) => {
@@ -39,13 +46,15 @@ export default function AddBook() {
         toast.error("Failed to add book!");
       });
 
+    if (isLoading) {
+      return <Loader />;
+    }
 
-    console.log({bookData})
+    console.log({ bookData });
 
-
-    // setTimeout(() => {
-    //   navigate("/all-books");
-    // }, 500);
+    setTimeout(() => {
+      navigate("/all-books");
+    }, 500);
     reset(); // Reset form after submit
   };
   return (
@@ -109,14 +118,38 @@ export default function AddBook() {
 
                 {/* Genre */}
                 <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Genre"
-                    {...register("genre", { required: "Genre is required" })}
-                    className="w-full rounded py-3 px-[14px] border text-base outline-none focus:border-primary"
+                  <Controller
+                    control={control}
+                    name="genre"
+                    rules={{ required: "Genre is required" }}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-full text-md text-base">
+                          <SelectValue placeholder="Select a genre" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Genres</SelectLabel>
+                            <SelectItem value="FICTION">FICTION</SelectItem>
+                            <SelectItem value="NON_FICTION">
+                              NON_FICTION
+                            </SelectItem>
+                            <SelectItem value="SCIENCE">SCIENCE</SelectItem>
+                            <SelectItem value="HISTORY">HISTORY</SelectItem>
+                            <SelectItem value="BIOGRAPHY">BIOGRAPHY</SelectItem>
+                            <SelectItem value="FANTASY">FANTASY</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
                   />
                   {errors.genre && (
-                    <p className="text-red-500">{errors.genre.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {errors.genre.message}
+                    </p>
                   )}
                 </div>
 
@@ -189,7 +222,6 @@ export default function AddBook() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                    
                       clipRule="evenodd"
                       d="M0 100C0 44.7715 0 0 0 0C55.2285 0 100 44.7715 100 100C100 100 100 100 0 100Z"
                       fill="#3056D3"

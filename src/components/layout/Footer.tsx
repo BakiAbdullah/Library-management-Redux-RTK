@@ -2,7 +2,7 @@ import { Dribbble, Facebook, Github, Twitter } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="relative bg-blueGray-200 mt-35 pb-6">
+    <footer className="relative bg-blueGray-200 mt-30 pb-6 border-t-6 border-slate-300 border-dotted pt-18">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap text-left lg:text-left">
           <div className="w-full lg:w-6/12 px-4">

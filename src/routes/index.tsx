@@ -1,7 +1,7 @@
 import App from "@/App";
 import Banner from "@/components/layout/Banner";
 import AddBook from "@/pages/AddBook";
-import { AllBooks } from "@/pages/Books";
+import { AllBooks } from "@/pages/AllBooks";
 import Borrow from "@/pages/Borrow";
 import { Footer } from "@/components/layout/Footer";
 

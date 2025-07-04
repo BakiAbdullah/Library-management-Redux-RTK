@@ -13,17 +13,10 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 import type { SortingState } from "@tanstack/react-table";
-import {  MoreHorizontal, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -34,93 +27,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { IBook } from "@/types";
-import { useGetBooksQuery } from "@/redux/api/bookApi";
+import {
+  useDeleteBookMutation,
+  useGetBooksQuery,
+} from "@/redux/api/bookApi";
 import Loader from "@/components/layout/Loader";
-
-export const columns: ColumnDef<IBook>[] = [
-  {
-    accessorKey: "title",
-    header: "Title",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("title")}</div>
-    ),
-  },
-  {
-    accessorKey: "author",
-    header: "Author",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("author")}</div>
-    ),
-  },
-  {
-    accessorKey: "genre",
-    header: "Genre",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("genre")}</div>
-    ),
-  },
-  {
-    accessorKey: "isbn",
-    header: "ISBN",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("isbn")}</div>,
-  },
-  {
-    accessorKey: "copies",
-    header: "Copies",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("copies")}</div>
-    ),
-  },
-  {
-    accessorKey: "available",
-    header: "Available",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("available") ? "Yes" : "No"}
-      </div>
-    ),
-  },
-  {
-    // accessorKey: "delete",
-    header: "Delete",
-    cell: () => (
-      <div className="capitalize">
-        <Trash className="h-4 w-4 text-red-600" />
-      </div>
-    ),
-  },
-
-  {
-    accessorKey: "sdf",
-    header: () => <div className="text-right">Actions</div>,
-    enableHiding: false,
-    cell: ({ row }) => {
-      const book = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(book.isbn)}
-            >
-              Copy book ISBN
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+import { Link } from "react-router";
+import { BorrowBooksModal } from "@/components/modules/borrowBooks/BorrowBooksModal";
+import { toast } from "sonner";
+import { UpdateBooksModal } from "@/components/modules/books/UpdateBooksModal";
 
 export function AllBooks() {
   // Consuming the API to get books data from Rtk Query
@@ -129,6 +44,110 @@ export function AllBooks() {
     refetchOnFocus: true,
     refetchOnReconnect: true,
   });
+
+  // DELETE book mutation
+  const [deleteBook] = useDeleteBookMutation();
+
+  // Function to handle book deletion
+  const handleDeleteBook = async (id: string) => {
+    const confirmDelete = confirm("Are you sure you want to delete this book?");
+    if (confirmDelete) {
+      try {
+        await deleteBook({ _id: id });
+        toast("Book deleted successfully");
+      } catch (error) {
+        toast.error("Failed to delete book. Please try again.");
+      }
+    }
+  };
+
+
+  // Table columns definitions
+  const columns: ColumnDef<IBook>[] = [
+    {
+      accessorKey: "title",
+      header: "Title",
+      cell: ({ row }) => (
+        <div className="capitalize ">{row.getValue("title")}</div>
+      ),
+    },
+    {
+      accessorKey: "author",
+      header: "Author",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("author")}</div>
+      ),
+    },
+    {
+      accessorKey: "genre",
+      header: "Genre",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("genre")}</div>
+      ),
+    },
+    {
+      accessorKey: "isbn",
+      header: "ISBN",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("isbn")}</div>
+      ),
+    },
+    {
+      accessorKey: "copies",
+      header: "Copies",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("copies")}</div>
+      ),
+    },
+    {
+      accessorKey: "available",
+      header: "Available",
+      cell: ({ row }) => (
+        <div className="capitalize">
+          {row.getValue("available") ? "Yes" : "not available"}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "delete",
+      header: "Delete",
+      cell: ({ row }) => (
+        <div className="capitalize">
+          <button
+            type="button"
+            onClick={() => handleDeleteBook(row.original._id)}
+            className="p-0 bg-transparent border-none"
+          >
+            <Trash className="h-4 w-4 text-red-600" />
+          </button>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "edit",
+      header: "Edit",
+      cell: ({ row }) => (
+        <div className="capitalize cursor-pointer">
+          <UpdateBooksModal
+            bookId={row.original._id}
+            booksData={row.original}
+          />
+        </div>
+      ),
+    },
+    {
+      accessorKey: "borrow",
+      header: "Borrow Book",
+      cell: ({ row }) => (
+        <div className="capitalize">
+          <BorrowBooksModal
+            bookId={row.original._id}
+            availableCopies={row.original.copies}
+          />
+        </div>
+      ),
+    },
+  ];
 
   // Hooks
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -144,6 +163,7 @@ export function AllBooks() {
     ? booksResponse.data
     : [];
 
+  // React Table instance
   const table = useReactTable({
     data: booksData,
     columns,
@@ -201,18 +221,14 @@ export function AllBooks() {
 
           <DropdownMenu>
             <div className="flex space-x-4">
-              <Button
-                variant="outline"
-                className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
-              >
-                Borrow Books
-              </Button>
-              <Button
-                variant="outline"
-                className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
-              >
-                Add New Book 
-              </Button>
+              <Link to="/add-book">
+                <Button
+                  variant="outline"
+                  className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
+                >
+                  Add New Book
+                </Button>
+              </Link>
             </div>
           </DropdownMenu>
         </div>
