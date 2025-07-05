@@ -1,4 +1,4 @@
-export default function BooksCard({ booksData }: any) {
+export default function BooksCard({ booksData, onClick }: any) {
   return (
     <div className="w-68 max-w-sm mx-auto my-10">
       <div className="flex flex-col bg-white shadow-md rounded-xl overflow-hidden h-full">
@@ -18,8 +18,9 @@ export default function BooksCard({ booksData }: any) {
             {booksData.title}
           </h2>
           <p className="text-sm text-gray-500 flex-grow">
-            {booksData.description || "No description available."}
+            {(booksData.description ? booksData.description.slice(0, 100) + "..." : "No description available.")}
           </p>
+        
         </div>
 
         {/* Button */}
@@ -27,6 +28,7 @@ export default function BooksCard({ booksData }: any) {
           <button
             className="w-full bg-gray-900 text-white text-sm py-2 rounded-md hover:bg-gray-800 transition cursop"
             type="button"
+            onClick={onClick}
           >
             Book Details
           </button>

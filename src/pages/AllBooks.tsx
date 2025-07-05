@@ -103,8 +103,8 @@ export function AllBooks() {
       accessorKey: "available",
       header: "Available",
       cell: ({ row }) => (
-        <div className="capitalize">
-          {row.getValue("available") ? "Yes" : "not available"}
+        <div className={`available ${row.getValue("available") ? "" : "text-red-600 font-medium"} `}>
+          {row.getValue("available") ? "Yes" : "unavailable"}
         </div>
       ),
     },

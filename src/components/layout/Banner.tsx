@@ -4,8 +4,15 @@ import { Link } from "react-router";
 import BooksCard from "./BooksCard";
 import { useGetBooksQuery } from "@/redux/api/bookApi";
 import type { IBook } from "@/types";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
+import SingleBookModal from "../modules/books/SingleBookModal";
 
 export default function Banner() {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+
+  // Fetching All books
   const { data: booksResponse } = useGetBooksQuery({
     pollingInterval: 30000,
     refetchOnFocus: true,
@@ -59,8 +66,17 @@ export default function Banner() {
       {/* Books Card Section */}
       <div className=" max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto my-16">
         {booksData.map((book) => (
-          <BooksCard key={book.isbn} booksData={book} />
+          <BooksCard
+            key={book._id}
+            booksData={book}
+            onClick={() => {setSelectedId(book._id); setOpen(true)}}
+          />
         ))}
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent>
+            <SingleBookModal bookId={selectedId} />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

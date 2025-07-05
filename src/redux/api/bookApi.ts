@@ -15,8 +15,9 @@ export const bookApi = createApi({
     }),
 
     // GET Single Book Api
-    getSingleBook: builder.query<IBook, string>({
-      query: (id) => `/api/books/${id}`,
+    getSingleBook: builder.query<{ data: IBook }, string>({
+      query: (_id) => `/api/books/${_id}`,
+      providesTags: ["books", "borrow"], 
     }),
 
     // CREATE Book Api
