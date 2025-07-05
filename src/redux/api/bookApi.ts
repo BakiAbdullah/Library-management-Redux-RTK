@@ -8,7 +8,7 @@ export const bookApi = createApi({
   }),
   tagTypes: ["books", "borrow"],
   endpoints: (builder) => ({
-    // GET Books Api
+    // GET all Books Api
     getBooks: builder.query<{ data: IBook[] }, any>({
       query: () => "/api/books",
       providesTags: ["books"],
@@ -17,13 +17,13 @@ export const bookApi = createApi({
     // GET Single Book Api
     getSingleBook: builder.query<{ data: IBook }, string>({
       query: (_id) => `/api/books/${_id}`,
-      providesTags: ["books", "borrow"], 
+      providesTags: ["books", "borrow"],
     }),
 
     // CREATE Book Api
     createBook: builder.mutation({
       query: (booksData: IBookData) => ({
-        url: "/api/books",
+        url: "/api/create-book",
         method: "POST",
         body: booksData,
       }),
@@ -42,7 +42,7 @@ export const bookApi = createApi({
     // Edit (UPDATE) Book Api
     updateBook: builder.mutation({
       query: ({ _id, booksData }) => ({
-        url: `/api/books/${_id}`,
+        url: `/api/edit-book/${_id}`,
         method: "PUT",
         body: booksData,
       }),
@@ -51,7 +51,7 @@ export const bookApi = createApi({
 
     // GET Borrow Book Summary Api
     getBorrowBookSummary: builder.query<{ data: IBorrowBook[] }, any>({
-      query: () => "/api/borrow",
+      query: () => "/api/borrow-summary",
       providesTags: ["borrow"],
     }),
 
