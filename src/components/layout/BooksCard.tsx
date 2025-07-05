@@ -33,7 +33,7 @@ export default function BooksCard({ booksData, onClick }: any) {
         {/* Button */}
         <div className="px-4 pb-4">
           <button
-            className="w-full bg-indigo-600 text-white text-sm py-2 rounded-md hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
+            className="w-full cursor-pointer bg-amber-600 text-white text-sm py-2 rounded-md hover:bg-amber-500 transition-all duration-200 shadow-md hover:shadow-lg"
             type="button"
             onClick={onClick}
           >
