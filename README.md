@@ -1,4 +1,4 @@
-# 📚 Minimal Library Management System
+# 📚 Beacon Library a minimal Library Management System
 
 A complete web-based **Library Management System** built with **React**, **Redux Toolkit Query (RTK Query)**, **TypeScript**, and **Tailwind** with **Shadcn/ui**. The system interacts with a **MongoDB + Express backend API** to handle books and borrowing logic efficiently.
 
