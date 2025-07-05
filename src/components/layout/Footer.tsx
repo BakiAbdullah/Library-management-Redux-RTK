@@ -2,124 +2,128 @@ import { Dribbble, Facebook, Github, Twitter } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="relative bg-blueGray-200 mt-30 pb-6 border-t-6 border-slate-300 border-dotted pt-18">
+    <footer className="relative bg-slate-100 mt-20 pt-12 pb-6 border-t border-slate-300">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap text-left lg:text-left">
-          <div className="w-full lg:w-6/12 px-4">
-            <h4 className="text-3xl font-semibold text-blueGray-700">
-              Let's keep in touch!
+        {/* Main Footer Content */}
+        <div className="flex flex-wrap justify-between text-left md:text-left">
+          {/* Contact Section */}
+          <div className="w-full md:w-6/12 px-4 mb-10 md:mb-0">
+            <h4 className="text-2xl font-bold text-slate-800">
+              Stay Connected
             </h4>
-            <h5 className="text-lg mt-0 mb-2 text-blueGray-600">
-              Find us on any of these platforms, we respond 1-2 business days.
-            </h5>
-            <div className="mt-6 space-x-4 lg:mb-0 mb-6">
-              <button>
-                <Twitter className="text-blue-400 w-7 h-7" />
-              </button>
-              <button>
-                <Facebook className="text-blue-500 w-7 h-7" />
-              </button>
-              <button>
-                <Dribbble className="text-red-500 w-7 h-7" />
-              </button>
-              <button>
-                <Github className="text-black w-7 h-7" />
-              </button>
-              
-            
+            <p className="text-slate-600 mt-2">
+              Reach us on social platforms. We usually respond within 1-2
+              business days.
+            </p>
+            <div className="flex space-x-4 mt-4">
+              <a href="#" aria-label="Twitter">
+                <Twitter className="w-6 h-6 text-sky-500 hover:text-sky-600 transition" />
+              </a>
+              <a href="#" aria-label="Facebook">
+                <Facebook className="w-6 h-6 text-blue-600 hover:text-blue-700 transition" />
+              </a>
+              <a href="#" aria-label="Dribbble">
+                <Dribbble className="w-6 h-6 text-pink-500 hover:text-pink-600 transition" />
+              </a>
+              <a href="#" aria-label="Github">
+                <Github className="w-6 h-6 text-gray-800 hover:text-black transition" />
+              </a>
             </div>
           </div>
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="flex flex-wrap items-top mb-6">
-              <div className="w-full lg:w-4/12 px-4 ml-auto">
-                <span className="block uppercase text-blueGray-500 text-sm font-semibold mb-2">
-                  Useful Links
-                </span>
-                <ul className="list-unstyled">
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://www.creative-tim.com/presentation?ref=njs-profile"
-                    >
-                      About Us
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://blog.creative-tim.com?ref=njs-profile"
-                    >
-                      Blog
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://www.github.com/creativetimofficial?ref=njs-profile"
-                    >
-                      Github
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://www.creative-tim.com/bootstrap-themes/free?ref=njs-profile"
-                    >
-                      Free Products
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="w-full lg:w-4/12 px-4">
-                <span className="block uppercase text-blueGray-500 text-sm font-semibold mb-2">
-                  Other Resources
-                </span>
-                <ul className="list-unstyled">
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-profile"
-                    >
-                      MIT License
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://creative-tim.com/terms?ref=njs-profile"
-                    >
-                      Terms &amp; Conditions
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://creative-tim.com/privacy?ref=njs-profile"
-                    >
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                      href="https://creative-tim.com/contact-us?ref=njs-profile"
-                    >
-                      Contact Us
-                    </a>
-                  </li>
-                </ul>
-              </div>
+
+          {/* Links Sections */}
+          <div className="w-full md:w-6/12 flex flex-wrap">
+            {/* Useful Links */}
+            <div className="w-full sm:w-6/12 px-4 mb-6">
+              <h5 className="uppercase text-sm font-semibold text-slate-600 mb-3">
+                Library Links
+              </h5>
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="/about"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    About Library
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/books"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    Browse Books
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/borrow-history"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    Borrow History
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/contact"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    Contact Support
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Policy Links */}
+            <div className="w-full sm:w-6/12 px-4">
+              <h5 className="uppercase text-sm font-semibold text-slate-600 mb-3">
+                Policies & Info
+              </h5>
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="/privacy"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/terms"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    Terms & Conditions
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/faq"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    FAQs
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/guidelines"
+                    className="text-slate-600 hover:text-slate-800 transition text-sm"
+                  >
+                    Library Guidelines
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-        <hr className="my-6 border-blueGray-300" />
-        <div className="flex flex-wrap items-center md:justify-between justify-center">
-          <div className="w-full md:w-4/12 px-4 mx-auto text-center">
-            <div className="text-sm text-blueGray-500 font-semibold py-1">
-              Copyright © <span id="get-current-year">2025</span> ReactJS by
-              Baki Abdullah
-            </div>
-          </div>
+
+        {/* Divider */}
+        <hr className="my-6 border-slate-300" />
+
+        {/* Copyright Section */}
+        <div className="text-center text-sm text-slate-500 font-medium">
+          © {new Date().getFullYear()} Library Management System by Baki
+          Abdullah
         </div>
       </div>
     </footer>
