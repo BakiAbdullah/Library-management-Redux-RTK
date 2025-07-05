@@ -16,7 +16,6 @@ import type { SortingState } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -190,17 +189,17 @@ export function AllBooks() {
   return (
     <div className="w-full mx-auto">
       {/* Banner Section */}
-      <div className="relative w-full h-[250px] md:h-[220px] overflow-hidden shadow-lg mb-6">
+      <div className="relative w-full h-[200px] sm:h-[250px] md:h-[280px] overflow-hidden shadow-lg mb-6">
         <img
           src="https://cdn.pixabay.com/photo/2021/01/21/15/54/books-5937716_1280.jpg"
           alt="Books Banner"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
             Explore Our Book Collection
           </h1>
-          <p className="text-sm md:text-lg text-gray-200 mt-2 max-w-xl drop-shadow">
+          <p className="text-xs sm:text-sm md:text-lg text-gray-200 mt-2 max-w-xl drop-shadow">
             Browse, search, and manage all available books in our library
             system.
           </p>
@@ -209,32 +208,30 @@ export function AllBooks() {
 
       <div className="max-w-7xl mx-auto px-4">
         {/* Table Filters */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-200 mb-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 mb-4">
           <Input
             placeholder="Search by Genre..."
             value={(table.getColumn("genre")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("genre")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm shadow-sm focus:ring-2 focus:ring-blue-500"
+            className="w-full md:max-w-sm shadow-sm focus:ring-2 focus:ring-blue-500"
           />
 
-          <DropdownMenu>
-            <div className="flex space-x-4">
-              <Link to="/add-book">
-                <Button
-                  variant="outline"
-                  className="ml-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
-                >
-                  Add New Book
-                </Button>
-              </Link>
-            </div>
-          </DropdownMenu>
+          <div className="flex justify-end">
+            <Link to="/add-book">
+              <Button
+                variant="outline"
+                className="w-full md:w-auto flex items-center gap-2 bg-amber-600 hover:bg-amber-500 hover:text-white text-white"
+              >
+                Add New Book
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Table Display */}
-        <div className="rounded-xl border shadow-md overflow-x-auto ">
+        <div className="rounded-xl border shadow-md overflow-x-auto">
           <Table>
             <TableHeader className="bg-gray-100">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -288,12 +285,12 @@ export function AllBooks() {
         </div>
 
         {/* Pagination */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between space-y-3 md:space-y-0 space-x-0 md:space-x-2 py-6">
-          <div className="text-muted-foreground text-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0 space-x-0 sm:space-x-2 py-6">
+          <div className="text-muted-foreground text-sm text-center sm:text-left">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
-          <div className="space-x-2 flex">
+          <div className="space-x-2 flex justify-center sm:justify-end">
             <Button
               variant="outline"
               size="sm"

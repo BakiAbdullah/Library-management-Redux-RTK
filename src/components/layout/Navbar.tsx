@@ -22,39 +22,37 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-800 text-white shadow-md sticky top-0 z-50">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-20 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-between h-auto py-4 gap-y-2">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <span className="bg-amber-600 text-white px-2 py-1 rounded font-bold text-lg tracking-wide">
-                Beacon <span className="text-white font-light">Library</span>
-              </span>
-            </Link>
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="bg-amber-600 text-white px-2 py-1 rounded font-bold text-lg tracking-wide">
+              Beacon <span className="text-white font-light">Library</span>
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6 flex-wrap">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`hover:text-amber-400 transition duration-200 ${
+                  pathname === link.path ? "text-amber-400 font-semibold" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center justify-between">
-            <div className="flex space-x-6 mr-10">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`hover:text-amber-400 transition ${
-                    pathname === link.path ? "text-amber-400 font-semibold" : ""
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <div>
-              <SearchBar onSearch={handleSearch} />
-            </div>
+          {/* SearchBar */}
+          <div className="hidden lg:block">
+            <SearchBar onSearch={handleSearch} />
           </div>
 
-          {/* Mobile Toggler */}
-          <div className="md:hidden">
+          {/* Mobile Toggle Button */}
+          <div className="md:hidden ml-auto">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-white hover:text-amber-400 focus:outline-none"
@@ -65,22 +63,26 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Dropdown */}
+      {/* Mobile Dropdown Menu */}
       {isOpen && (
-        <div className="md:hidden px-4 pb-4">
-          <div className="flex flex-col space-y-2 mt-2 bg-gray-700 rounded-md p-4">
+        <div className="md:hidden bg-gray-700 px-4 pb-4">
+          <div className="flex flex-col space-y-2 pt-2 rounded-md">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`hover:text-amber-400 transition ${
+                className={`block py-1 hover:text-amber-400 transition ${
                   pathname === link.path ? "text-amber-400 font-semibold" : ""
                 }`}
               >
                 {link.label}
               </Link>
             ))}
+            {/* Mobile SearchBar */}
+            <div className="pt-2">
+              <SearchBar onSearch={handleSearch} />
+            </div>
           </div>
         </div>
       )}
